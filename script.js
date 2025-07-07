@@ -11,8 +11,11 @@ function renderOrders() {
 
     row.innerHTML = `
       <td>${index + 1}</td>
+      <td>${order.customerName}</td>
+      <td>${order.customerId}</td>
       <td>${order.name}</td>
-      <td>$${parseFloat(order.price).toFixed(2)}</td>
+      <td>${order.priceDollars ? '$' + parseFloat(order.priceDollars).toFixed(2) : '-'}</td>
+      <td>${order.priceRobux ? 'R$' + parseInt(order.priceRobux) : '-'}</td>
       <td>${order.priority}</td>
       <td>${order.status}</td>
     `;
@@ -26,13 +29,16 @@ function renderOrders() {
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
+  const customerName = document.getElementById('customer-name').value.trim();
+  const customerId = document.getElementById('customer-id').value.trim();
   const name = document.getElementById('order-name').value.trim();
-  const price = document.getElementById('order-price').value;
+  const priceDollars = document.getElementById('order-price-dollars').value;
+  const priceRobux = document.getElementById('order-price-robux').value;
   const priority = document.getElementById('order-priority').value;
   const status = document.getElementById('order-status').value;
 
-  if (name && price) {
-    orders.push({ name, price, priority, status });
+  if (customerName && customerId && name) {
+    orders.push({ customerName, customerId, name, priceDollars, priceRobux, priority, status });
     renderOrders();
     form.reset();
   }

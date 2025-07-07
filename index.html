@@ -3,41 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Order Tracker</title>
+  <title>Web Tracker</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>📦 Order Tracker</h1>
+  <div class="container-flex">
+    <!-- Left: Web Tracker Form -->
+    <div class="order-form">
+      <h1>🛠 Web Tracker</h1>
+      <form id="order-form">
+        <input type="text" id="customer-name" placeholder="Customer Name" required />
+        <input type="text" id="customer-id" placeholder="Customer ID" required />
+        <input type="text" id="order-name" placeholder="Order Name" required />
+        <input type="number" id="order-price-dollars" placeholder="Price ($)" min="0" step="0.01" />
+        <input type="number" id="order-price-robux" placeholder="Price (R$)" min="0" step="1" />
+        <select id="order-priority">
+          <option value="High">High Priority</option>
+          <option value="Low">Low Priority</option>
+        </select>
+        <select id="order-status">
+          <option value="Not Complete">Not Complete</option>
+          <option value="Complete">Complete</option>
+        </select>
+        <button type="submit">Add Order</button>
+      </form>
+    </div>
 
-    <form id="order-form">
-      <input type="text" id="order-name" placeholder="Order Name" required />
-      <input type="number" id="order-price" placeholder="Price" required />
-      <select id="order-priority">
-        <option value="High">High Priority</option>
-        <option value="Low">Low Priority</option>
-      </select>
-      <select id="order-status">
-        <option value="Pending">Pending</option>
-        <option value="Processing">Processing</option>
-        <option value="Completed">Completed</option>
-      </select>
-      <button type="submit">Add Order</button>
-    </form>
-
-    <h2>Order List</h2>
-    <table id="orders-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Priority</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <!-- Right: Order List -->
+    <div class="order-list">
+      <h2>📋 Order List</h2>
+      <table id="orders-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer</th>
+            <th>ID</th>
+            <th>Order</th>
+            <th>DOLLAR</th>
+            <th>R($)</th>
+            <th>Priority</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 
   <script src="script.js"></script>
