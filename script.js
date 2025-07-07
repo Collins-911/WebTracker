@@ -1,5 +1,27 @@
+// Generate a random alphanumeric ID
+function generateCustomerId(length = 8) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 const form = document.getElementById('order-form');
 const tableBody = document.querySelector('#orders-table tbody');
+const nameInput = document.getElementById('customer-name');
+const idInput = document.getElementById('customer-id');
+
+// Prevent editing ID manually
+idInput.readOnly = true;
+
+// Generate a new ID when typing customer name
+nameInput.addEventListener('input', () => {
+  if (nameInput.value.trim().length > 0 && idInput.value.trim() === '') {
+    idInput.value = generateCustomerId();
+  }
+});
 
 let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
@@ -18,6 +40,7 @@ function renderOrders() {
       <td>${order.priceRobux ? 'R$' + parseInt(order.priceRobux) : '-'}</td>
       <td>${order.priority}</td>
       <td>${order.status}</td>
+      <td><button class="delete-btn" data-index="${index}">Delete</button></td>
     `;
 
     tableBody.appendChild(row);
@@ -29,18 +52,36 @@ function renderOrders() {
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const customerName = document.getElementById('customer-name').value.trim();
-  const customerId = document.getElementById('customer-id').value.trim();
-  const name = document.getElementById('order-name').value.trim();
+  const customerName = nameInput.value.trim();
+  const customerId = idInput.value.trim();
+  const orderName = document.getElementById('order-name').value.trim();
   const priceDollars = document.getElementById('order-price-dollars').value;
   const priceRobux = document.getElementById('order-price-robux').value;
   const priority = document.getElementById('order-priority').value;
   const status = document.getElementById('order-status').value;
 
-  if (customerName && customerId && name) {
-    orders.push({ customerName, customerId, name, priceDollars, priceRobux, priority, status });
+  if (customerName && customerId && orderName) {
+    orders.push({
+      customerName,
+      customerId,
+      name: orderName,
+      priceDollars,
+      priceRobux,
+      priority,
+      status
+    });
+
     renderOrders();
     form.reset();
+    idInput.value = ''; // clear and wait for next auto-generate
+  }
+});
+
+tableBody.addEventListener('click', function (e) {
+  if (e.target.classList.contains('delete-btn')) {
+    const index = e.target.dataset.index;
+    orders.splice(index, 1);
+    renderOrders();
   }
 });
 
